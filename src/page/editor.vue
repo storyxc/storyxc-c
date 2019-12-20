@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     publish() {
-      this.$axios.get('http://localhost:8080/story/user')
+      this.$axios.get('/story/user')
         .then(res => {
           console.log(res);
         })
