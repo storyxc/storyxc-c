@@ -38,7 +38,7 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="less" scoped>
 #home {
   margin: 100px auto;
   text-align: center;

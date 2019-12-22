@@ -49,7 +49,7 @@
             mode="horizontal"
             @select="handleSelect"
           >
-            <el-menu-item index="1">首页</el-menu-item>
+            <el-menu-item index="1"><el-link href="/" target="_self">首页</el-link></el-menu-item>
             <el-submenu index="2">
               <template slot="title">文章分类</template>
               <el-menu-item index="2-1">分类1</el-menu-item>
@@ -57,7 +57,8 @@
               <el-menu-item index="2-3">分类3</el-menu-item>
             </el-submenu>
             <el-menu-item index="3">留言</el-menu-item>
-            <el-menu-item index="4">后台管理</el-menu-item>
+            <el-menu-item index="4"><el-link href="/editor" target="_blank">新文章</el-link></el-menu-item>
+            <el-menu-item index="5"><el-link href="/management" target="_blank">后台管理</el-link></el-menu-item>
 
             <div class="blogStats">
               <span id="stats_post_count">随笔-0&nbsp;</span>

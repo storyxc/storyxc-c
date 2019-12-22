@@ -6,7 +6,9 @@ body {
   text-shadow: 0 0 1px transparent;
   color: #505050;
 }
-
+a hove {
+  text-decoration: none !important;
+}
 div:focus{
   outline:none;
 }
@@ -40,10 +42,6 @@ a {
   text-decoration: none;
 }
 
-#indexHeader a:hover {
-  text-decoration: underline;
-  color: #258fb8;
-}
 
 #home {
   margin: 0 auto;
