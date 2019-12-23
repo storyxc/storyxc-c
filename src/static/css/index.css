@@ -342,6 +342,7 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 10px 10px 10px #9E9E9E;
 }
 #footer {
+  font-size: 12px !important;
   color: #999;
   margin-bottom: 50px;
   font: 0.9em/1.6 "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
