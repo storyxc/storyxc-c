@@ -52,3 +52,6 @@ label {
 p {
     text-align: center;
 }
+button {
+    outline: none;
+}

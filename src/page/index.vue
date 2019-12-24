@@ -52,15 +52,14 @@
             <el-menu-item index="1">
               <el-link href="/" target="_self">首页</el-link>
             </el-menu-item>
-            <el-submenu index="2">
-              <template slot="title">文章分类</template>
-              <el-menu-item index="2-1">分类1</el-menu-item>
-              <el-menu-item index="2-2">分类2</el-menu-item>
-              <el-menu-item index="2-3">分类3</el-menu-item>
-            </el-submenu>
-            <el-menu-item index="3">留言</el-menu-item>
+            <el-menu-item index="2">
+              <el-link href="/contact" target="_self">联系</el-link>
+            </el-menu-item>
+            <el-menu-item index="3">
+              <el-link href="/comment" target="_self">留言</el-link>
+            </el-menu-item>
             <el-menu-item index="4">
-              <el-link href="/editor" target="_blank">新文章</el-link>
+              <el-link href="/editor" target="_self">新文章</el-link>
             </el-menu-item>
             <el-menu-item index="5">
               <el-link href="/management" target="_blank">后台管理</el-link>
@@ -79,29 +78,29 @@
       <div id="main">
         <div id="mainContent">
           <div class="forFlow">
-            <div class="day">
+            <div v-for="(item,i) in dataList" :key="i">
+                <div class="day">
               <div class="dayTitle">
-                <a href="https://www.cnblogs.com/story-xc/archive/2019/05/28.html">2019年5月28日</a>
+                <a :href="item.articleUrl">{{item.createTime}}</a>
               </div>
               <div class="postTitle">
                 <a
                   class="postTitle2"
-                  href="https://www.cnblogs.com/story-xc/p/10935739.html"
-                >IoC和AOP</a>
+                  :href="item.articleUrl"
+                >{{item.articleTitle}}</a>
               </div>
               <div class="postCon">
                 <div class="c_b_p_desc">
-                  摘要：IoC和AOP 一、IoC 什么是IoC：控制反转(Inversion of Control)，又称为依赖注入(Dependency
-                  Injection)，把创建对象的控制权交出去，从主动创建对象变为被动接受对象。具体的说就是，在传统的程序设计中，如果在web层要调用service层的方法，就必须在
+                  {{item.articleDesc}}
                   <a
-                    href="https://www.cnblogs.com/story-xc/p/10935739.html"
+                    :href="item.articleUrl"
                     class="c_b_p_desc_readmore"
                   >阅读全文</a>
                 </div>
               </div>
               <div class="clear"></div>
               <div class="postDesc">
-                posted @ 2019-05-28 10:40 故事而已zzz 阅读 (76) 评论 (0)
+                posted @ {{item.createTime}} {{item.authorCode}} 阅读 ({{item.viewCount}}) 评论 ({{item.commentCount}})
                 <a
                   href="https://i.cnblogs.com/EditPosts.aspx?postid=10935739"
                   rel="nofollow"
@@ -109,9 +108,17 @@
               </div>
               <div class="clear"></div>
             </div>
-
+            </div>
+            <!-- 分页数据 -->
             <div class="topicListFooter">
-              <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
+              <el-pagination
+                class="pagiantion"
+                @current-change="handleCurrentChange"
+                :current-page="pagination.currentPage"
+                :page-size="pagination.pageSize"
+                layout="total, prev, pager, next, jumper"
+                :total="pagination.total"
+              ></el-pagination>
             </div>
           </div>
           <!--end: forFlow -->
@@ -176,15 +183,16 @@
         <!--end slidBar-->
         <div class="clear"></div>
       </div>
+
       <!--end: main-->
       <div id="footer">
-        Copyright © 2019-2020 <a href="http://www.storyxc.com">故事而已</a>
+        Copyright © 2019-2020
+        <a href="http://www.storyxc.com">故事而已</a>
         <a href="http://www.beian.miit.gov.cn/" target="_blank">豫ICP备19046036号</a>
-        <br/>
-        <span id="poweredby">Powered by Java on Aliyun(Linux)</span>
-        
         <br />
-        
+        <span id="poweredby">Powered by Java on Aliyun(Linux)</span>
+
+        <br />
       </div>
     </div>
     <!--end: home-->
@@ -203,15 +211,35 @@ export default {
       iconUrl: "static/story.ico",
       icon: "static/story.gif",
       activeIndex: "1",
-      activeIndex2: "1"
+      activeIndex2: "1",
+      dataList: [],
+      pagination: {
+        //分页相关属性
+        currentPage: 1,
+        pageSize: 10,
+        total: 100
+      }
     };
   },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    findPage() {
+      this.$axios.post("/story/article/findPage", this.pagination).then(res => {
+        this.dataList = res.data.data.list;
+        this.pagination.total = res.data.data.total;
+      });
+    },
+    //切换页码
+    handleCurrentChange(currentPage) {
+      this.pagination.currentPage = currentPage;
+      this.findPage();
     }
   },
-  created() {},
+  created() {
+    this.findPage();
+  },
   mounted() {
     clock();
   }
