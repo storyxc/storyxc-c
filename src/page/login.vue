@@ -30,7 +30,7 @@ export default {
     name: 'login',
     data(){
         return{
-            icon: 'static/story.gif'
+            icon: 'static/story.jpg'
         }
     }
 }

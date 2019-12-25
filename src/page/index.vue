@@ -53,22 +53,22 @@
               <el-link href="/" target="_self">首页</el-link>
             </el-menu-item>
             <el-menu-item index="2">
-              <el-link href="/contact" target="_self">联系</el-link>
+              <el-link href="/contact" target="_blank">联系</el-link>
             </el-menu-item>
             <el-menu-item index="3">
               <el-link href="/comment" target="_self">留言</el-link>
             </el-menu-item>
             <el-menu-item index="4">
-              <el-link href="/editor" target="_self">新文章</el-link>
+              <el-link href="/editor" target="_blank" >新文章</el-link>
             </el-menu-item>
             <el-menu-item index="5">
               <el-link href="/management" target="_blank">后台管理</el-link>
             </el-menu-item>
 
             <div class="blogStats">
-              <span id="stats_post_count">随笔-0&nbsp;</span>
-              <span id="stats_article_count">文章-0&nbsp;</span>
-              <span id="stats-comment_count">评论-0</span>
+              <span id="stats_article_count">文章-{{blogStat.articleCount}}&nbsp;</span>
+              <span id="stats_comment_count">评论-{{blogStat.commentCount}}&nbsp;</span>
+              <span id="stats-visitor_count" display="none"></span>
             </div>
           </el-menu>
         </div>
@@ -147,16 +147,10 @@
             <div id="leftcontentcontainer">
               <div id="blog-sidecolumn"></div>
               <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
-                <h3 class="catListTitle">标签</h3>
+                <h3 class="catListTitle">文章分类</h3>
                 <ul>
-                  <li>
-                    <a href="http://www.baidu.com" rel target>java(10)</a>
-                  </li>
-                  <li>
-                    <a href="http://www.baidu.com" rel target>java(200)</a>
-                  </li>
-                  <li>
-                    <a href="http://www.baidu.com" rel target>sql(29)</a>
+                  <li v-for="(item,i) in cateArtList" :key="i">
+                    <a href="#" target="_self" ><span @click="queryByCategory(item.categoryId)">{{item.categoryName}}({{item.count}})</span></a>
                   </li>
                 </ul>
               </div>
@@ -165,11 +159,8 @@
                   <h3 class="catListTitle">阅读排行榜</h3>
                   <div id="TopViewPostsBlock">
                     <ul style="word-break:break-all">
-                      <li>
-                        <a href="http://www.baidu.com">1.java(1648)</a>
-                      </li>
-                      <li>
-                        <a href="http://www.baidu.com">2.java(1648)</a>
+                      <li v-for="(item,i) in hotArticle" :key="i">
+                        <a :href="''+item.articleUrl">{{i+1}}.{{item.articleTitle}}({{item.viewCount}})</a>
                       </li>
                     </ul>
                   </div>
@@ -209,7 +200,7 @@ export default {
   data() {
     return {
       iconUrl: "static/story.ico",
-      icon: "static/story.gif",
+      icon: "static/story.jpg",
       activeIndex: "1",
       activeIndex2: "1",
       dataList: [],
@@ -218,7 +209,10 @@ export default {
         currentPage: 1,
         pageSize: 10,
         total: 100
-      }
+      },
+      cateArtList: [],
+      blogStat: {},
+      hotArticle: []
     };
   },
   methods: {
@@ -235,10 +229,32 @@ export default {
     handleCurrentChange(currentPage) {
       this.pagination.currentPage = currentPage;
       this.findPage();
+    },
+    queryByCategory(item){
+      this.pagination.queryString = item;
+      this.findPage();
+    },
+    queryCategoryArticle(){
+      this.$axios.get("/story/category/article").then(res=>{
+        this.cateArtList = res.data.data;
+      })
+    },
+    queryBlogStat(){
+      this.$axios.get("/story/article/blogStat").then(res=>{
+        this.blogStat = res.data.data;
+      })
+    },
+    queryHotArticle(){
+      this.$axios.get("/story/article/hot").then(res=>{
+        this.hotArticle = res.data.data;
+      })
     }
   },
   created() {
     this.findPage();
+    this.queryCategoryArticle();
+    this.queryBlogStat();
+    this.queryHotArticle();
   },
   mounted() {
     clock();
