@@ -40,6 +40,7 @@ h3 {
 
 a {
   text-decoration: none;
+  color: #258fb8;
 }
 
 
@@ -211,7 +212,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 #sideBar{
   width: 22%;
-  line-height: 1.8em;
+  line-height: 2.3em;
   float: right;
 }
 @media screen and (max-width: 900px) {
@@ -249,7 +250,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
 }
 #blog-sidecolumn ul, .newsItem #blog-news {
-  font-size: 0.9em;
+  font-size: 0.9em !important;
   padding: 15px 20px;
 }
 #blog-sidecolumn ul,
@@ -404,4 +405,25 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 100px;
   }
 
+  .catListTitle h3 {
+    font-size: 14px;
+  }
+
+
+
+#blog-sidecolumn ul, .newsItem #blog-news {
+  font-size: 0.9em;
+  padding: 15px 20px;
+}
+
+ul li {
+  list-style-type:none;
+}
+
+  .v-note-panel {
+    border: none !important;
+  }
+  .v-show-content {
+    background-color: white !important;
+  }
 }

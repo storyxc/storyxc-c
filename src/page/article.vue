@@ -72,45 +72,24 @@
       <!--header-->
       <div id="main">
         <div id="mainContent">
-          <div class="forFlow">
-            <div v-for="(item,i) in dataList" :key="i">
-              <div class="day">
-                <div class="dayTitle">
-                  <a :href="item.articleUrl">{{item.createTime}}</a>
-                </div>
-                <div class="postTitle">
-                  <a class="postTitle2" :href="item.articleUrl">{{item.articleTitle}}</a>
-                </div>
-                <div class="postCon">
-                  <div class="c_b_p_desc">
-                    {{item.articleDesc}}
-                    <a :href="item.articleUrl" class="c_b_p_desc_readmore">阅读全文</a>
-                  </div>
-                </div>
-                <div class="clear"></div>
-                <div class="postDesc">
-                  posted @ {{item.createTime}} {{item.authorCode}} 阅读 ({{item.viewCount}}) 评论 ({{item.commentCount}})
-                  <a
-                    href="#"
-                    rel="nofollow"
-                  >编辑</a>
-                </div>
-                <div class="clear"></div>
-              </div>
-            </div>
-            <!-- 分页数据 -->
-            <div class="topicListFooter">
-              <el-pagination
-                class="pagiantion"
-                @current-change="handleCurrentChange"
-                :current-page="pagination.currentPage"
-                :page-size="pagination.pageSize"
-                layout="total, prev, pager, next, jumper"
-                :total="pagination.total"
-              ></el-pagination>
-            </div>
+            <h1 class="articleTitle"><a :href="article.articleUrl">{{article.articleTitle}}</a></h1>
+            <div class="clear"></div>
+          <nossr>
+            <mavon-editor
+              style="height: 100%;margin-top: 15px"
+              v-model="article.articleMain"
+              :subfield="false"
+              :boxShadow="false"
+              defaultOpen="preview"
+              :toolbarsFlag="false"
+            />
+          </nossr>
+
+          <div id="copyright">
+            <p>本文作者:{{article.authorCode}}</p>
+            <p>文章链接:<a :href="article.articleUrl">{{article.articleUrl}}<a></p>
+            <p>版权声明:转载请联系作者并声明出处</p>
           </div>
-          <!--end: forFlow -->
         </div>
         <!--end: mainContent-->
 
@@ -135,33 +114,33 @@
             </div>
             <div id="leftcontentcontainer">
               <div id="blog-sidecolumn">
-                <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
-                  <h3 class="catListTitle">文章分类</h3>
-                  <ul>
-                    <li v-for="(item,i) in cateArtList" :key="i">
-                      <a href="#" target="_self">
-                        <span
-                          @click="queryByCategory(item.categoryId)"
-                        >{{item.categoryName}}({{item.count}})</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div id="sidebar_topviewedposts" class="sidebar-block">
-                  <div class="catListView">
-                    <h3 class="catListTitle">阅读排行榜</h3>
-                    <div id="TopViewPostsBlock">
-                      <ul style="word-break:break-all" id="hotArticle">
-                        <li v-for="(item,i) in hotArticle" :key="i">
-                          <a
-                            :href="''+item.articleUrl"
-                          >{{i+1}}.{{item.articleTitle.length > 14? item.articleTitle.substring(0,14)+"..." : item.articleTitle}}({{item.viewCount}})</a>
-                        </li>
-                      </ul>
-                    </div>
+              <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+                <h3 class="catListTitle hotArticle">文章分类</h3>
+                <ul>
+                  <li v-for="(item,i) in cateArtList" :key="i">
+                    <a href="#" target="_self">
+                      <span
+                        @click="queryByCategory(item.categoryId)"
+                      >{{item.categoryName}}({{item.count}})</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div id="sidebar_topviewedposts" class="sidebar-block">
+                <div class="catListView">
+                  <h3 class="catListTitle">阅读排行榜</h3>
+                  <div id="TopViewPostsBlock" class="hotArticle">
+                    <ul style="word-break:break-all">
+                      <li v-for="(item,i) in hotArticle" :key="i">
+                        <a
+                          :href="''+item.articleUrl"
+                        >{{i+1}}.{{item.articleTitle}}({{item.viewCount}})</a>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
+             </div>
             </div>
           </div>
           <!--end sideBarMain-->
@@ -186,47 +165,41 @@
   </div>
 </template>
 
+
 <script>
 import vueCanvasNest from "vue-canvas-nest";
 import { clock } from "../static/js/clock";
+import { mavonEditor } from "mavon-editor";
+import "mavon-editor/dist/css/index.css";
 
 export default {
-  components: { vueCanvasNest },
-  name: "index",
+  components: {
+    vueCanvasNest,
+    mavonEditor
+    // or 'mavon-editor': mavonEditor
+  },
+  name: "article",
   data() {
     return {
-      iconUrl: "static/story.ico",
-      icon: "static/story.jpg",
+      iconUrl: "/static/story.ico",
+      icon: "/static/story.jpg",
       activeIndex: "1",
       activeIndex2: "1",
-      dataList: [],
-      pagination: {
-        //分页相关属性
-        currentPage: 1,
-        pageSize: 10,
-        total: 100
-      },
-      cateArtList: [],
       blogStat: {},
-      hotArticle: []
+      id: "",
+      article: {
+        articleMain: "",
+        articleTitle: "",
+        articleCategory: "",
+        tagIds: [],
+        authorCode: "",
+        articleUrl: ""
+      },
+      hotArticle: [],
+      cateArtList: []
     };
   },
   methods: {
-    findPage() {
-      this.$axios.post("/story/article/findPage", this.pagination).then(res => {
-        this.dataList = res.data.data.list;
-        this.pagination.total = res.data.data.total;
-      });
-    },
-    //切换页码
-    handleCurrentChange(currentPage) {
-      this.pagination.currentPage = currentPage;
-      this.findPage();
-    },
-    queryByCategory(item) {
-      this.pagination.queryString = item;
-      this.findPage();
-    },
     queryCategoryArticle() {
       this.$axios.get("/story/category/article").then(res => {
         this.cateArtList = res.data.data;
@@ -241,10 +214,16 @@ export default {
       this.$axios.get("/story/article/hot").then(res => {
         this.hotArticle = res.data.data;
       });
+    },
+    loadArticle() {
+      this.id = this.$route.params.id;
+      this.$axios.get("/story/article/" + this.id).then(res => {
+        this.article = res.data.data;
+      });
     }
   },
   created() {
-    this.findPage();
+    this.loadArticle();
     this.queryCategoryArticle();
     this.queryBlogStat();
     this.queryHotArticle();
@@ -256,4 +235,34 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "../static/css/index.css";
+
+#copyright {
+    width: 90%;
+    margin-top: 15px;
+    border-left: 5px solid #ff1700;
+    padding: 10px;
+    background: #ececec;
+}
+
+.articleTitle {
+    font-family: "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
+    clear: both;
+    background-color: #FBF9F9;
+    margin-bottom: 8px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 20px;
+    border-left: 3px solid #21759b;
+    padding-left: 20px;
+    font-size: 20px;
+    border-radius: 0px;
+}
+
+.articleTitle a:link, .articleTitle a:visited, .articleTitle a:active {
+    transition: all 0.4s linear 0s;
+}
+
+.clear {
+    clear: both;
+}
 </style>
