@@ -72,8 +72,10 @@
       <!--header-->
       <div id="main">
         <div id="mainContent">
-            <h1 class="articleTitle"><a :href="article.articleUrl">{{article.articleTitle}}</a></h1>
-            <div class="clear"></div>
+          <h1 class="articleTitle">
+            <a :href="article.articleUrl">{{article.articleTitle}}</a>
+          </h1>
+          <div class="clear"></div>
           <nossr>
             <mavon-editor
               style="height: 100%;margin-top: 15px"
@@ -87,9 +89,14 @@
 
           <div id="copyright">
             <p>本文作者:{{article.authorCode}}</p>
-            <p>文章链接:<a :href="article.articleUrl">{{article.articleUrl}}<a></p>
+            <p>
+              文章链接:
+              <a :href="article.articleUrl">{{article.articleUrl}}</a>
+            </p>
             <p>版权声明:转载请联系作者并声明出处</p>
           </div>
+
+          <div id="vcomments"></div>
         </div>
         <!--end: mainContent-->
 
@@ -114,33 +121,33 @@
             </div>
             <div id="leftcontentcontainer">
               <div id="blog-sidecolumn">
-              <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
-                <h3 class="catListTitle hotArticle">文章分类</h3>
-                <ul>
-                  <li v-for="(item,i) in cateArtList" :key="i">
-                    <a href="#" target="_self">
-                      <span
-                        @click="queryByCategory(item.categoryId)"
-                      >{{item.categoryName}}({{item.count}})</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div id="sidebar_topviewedposts" class="sidebar-block">
-                <div class="catListView">
-                  <h3 class="catListTitle">阅读排行榜</h3>
-                  <div id="TopViewPostsBlock" class="hotArticle">
-                    <ul style="word-break:break-all">
-                      <li v-for="(item,i) in hotArticle" :key="i">
-                        <a
-                          :href="''+item.articleUrl"
-                        >{{i+1}}.{{item.articleTitle}}({{item.viewCount}})</a>
-                      </li>
-                    </ul>
+                <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+                  <h3 class="catListTitle hotArticle">文章分类</h3>
+                  <ul>
+                    <li v-for="(item,i) in cateArtList" :key="i">
+                      <a href="#" target="_self">
+                        <span
+                          @click="queryByCategory(item.categoryId)"
+                        >{{item.categoryName}}({{item.count}})</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div id="sidebar_topviewedposts" class="sidebar-block">
+                  <div class="catListView">
+                    <h3 class="catListTitle">阅读排行榜</h3>
+                    <div id="TopViewPostsBlock" class="hotArticle">
+                      <ul style="word-break:break-all">
+                        <li v-for="(item,i) in hotArticle" :key="i">
+                          <a
+                            :href="''+item.articleUrl"
+                          >{{i+1}}.{{item.articleTitle}}({{item.viewCount}})</a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-             </div>
             </div>
           </div>
           <!--end sideBarMain-->
@@ -164,13 +171,13 @@
     <!--end: home-->
   </div>
 </template>
-
-
 <script>
 import vueCanvasNest from "vue-canvas-nest";
 import { clock } from "../static/js/clock";
 import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
+import Valine from 'valine';
+import $ from 'jquery';
 
 export default {
   components: {
@@ -200,6 +207,21 @@ export default {
     };
   },
   methods: {
+    createValine() {
+      const Valine = require('valine');
+      window.AV = require('leancloud-storage')
+      const valine =  new Valine({
+        el: '#vcomments',
+        appId: 'KMcB6K6smLzUtvAYso4rMNp6-gzGzoHsz',
+        appKey: 'Lj6y2pgfAhX4bNz3RwVvREIK',
+        notify: true,
+        verify: false,
+        avatar: 'mp',
+        path: window.location.pathname,
+        placeholder: '欢迎留言与我分享您的想法,留言时填写邮箱可以及时收到回复提醒...',
+      });
+      this.valineRefresh = false
+    },
     queryCategoryArticle() {
       this.$axios.get("/story/category/article").then(res => {
         this.cateArtList = res.data.data;
@@ -230,6 +252,8 @@ export default {
   },
   mounted() {
     clock();
+    this.createValine();
+    $('.info').hide();
   }
 };
 </script>
@@ -237,32 +261,46 @@ export default {
 @import "../static/css/index.css";
 
 #copyright {
-    width: 90%;
-    margin-top: 15px;
-    border-left: 5px solid #ff1700;
-    padding: 10px;
-    background: #ececec;
+  width: 90%;
+  margin-top: 15px;
+  border-left: 5px solid #ff1700;
+  padding: 10px;
+  background: #ececec;
 }
 
 .articleTitle {
-    font-family: "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
-    clear: both;
-    background-color: #FBF9F9;
-    margin-bottom: 8px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-top: 20px;
-    border-left: 3px solid #21759b;
-    padding-left: 20px;
-    font-size: 20px;
-    border-radius: 0px;
+  font-family: "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
+  clear: both;
+  background-color: #fbf9f9;
+  margin-bottom: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 20px;
+  border-left: 3px solid #21759b;
+  padding-left: 20px;
+  font-size: 20px;
+  border-radius: 0px;
 }
 
-.articleTitle a:link, .articleTitle a:visited, .articleTitle a:active {
-    transition: all 0.4s linear 0s;
+.articleTitle a:link,
+.articleTitle a:visited,
+.articleTitle a:active {
+  transition: all 0.4s linear 0s;
 }
 
 .clear {
-    clear: both;
+  clear: both;
+}
+
+#vcomments {
+  width: 80%;
+  min-width: 80%;
+  padding: 10px;
+  margin-top: 20px;
+  display: block;
+}
+
+.power .txt-right {
+  display: none !important;
 }
 </style>
