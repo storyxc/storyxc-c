@@ -41,6 +41,11 @@ export default new Router({
       path: '/comment',
       name: Comment,
       component: Comment
+    },
+    {
+      path: '/editor/:id',
+      name: Editor,
+      component: Editor
     }
   ]
 })

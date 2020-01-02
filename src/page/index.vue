@@ -54,7 +54,7 @@
               <el-link href="/comment" target="_self">留言</el-link>
             </el-menu-item>
             <el-menu-item >
-              <el-link href="/editor" target="_self">新文章</el-link>
+              <el-link href="/editor" target="_self">发布文章</el-link>
             </el-menu-item>
             <el-menu-item >
               <el-link href="/management" target="_self">后台管理</el-link>
@@ -91,7 +91,7 @@
                 <div class="postDesc">
                   posted @ {{item.createTime}} {{item.authorCode}} 阅读 ({{item.viewCount}})
                   <a
-                    href="#"
+                    :href="'/editor/'+item.id"
                     rel="nofollow"
                   >编辑</a>
                 </div>
@@ -177,7 +177,7 @@
         <a href="http://www.storyxc.com">故事而已</a>
         <a href="http://www.beian.miit.gov.cn/" target="_blank">豫ICP备19046036号</a>
         <br />
-        <span id="poweredby">Powered by Java on Aliyun(Linux)</span>
+        <span id="poweredby">Powered by Java</span>
 
         <br />
       </div>

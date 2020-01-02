@@ -54,7 +54,7 @@
               <el-link target="_self">留言</el-link>
             </el-menu-item>
             <el-menu-item>
-              <el-link href="/editor" target="_self">新文章</el-link>
+              <el-link href="/editor" target="_self">发布文章</el-link>
             </el-menu-item>
             <el-menu-item>
               <el-link href="/management" target="_self">后台管理</el-link>
@@ -135,7 +135,7 @@
                         <li v-for="(item,i) in hotArticle" :key="i">
                           <a
                             :href="''+item.articleUrl"
-                          >{{i+1}}.{{item.articleTitle}}({{item.viewCount}})</a>
+                          >{{i+1}}.{{item.articleTitle.length > 14? item.articleTitle.substring(0,14)+"..." : item.articleTitle}}({{item.viewCount}})</a>
                         </li>
                       </ul>
                     </div>
@@ -157,7 +157,7 @@
         <a href="http://www.storyxc.com">故事而已</a>
         <a href="http://www.beian.miit.gov.cn/" target="_blank">豫ICP备19046036号</a>
         <br />
-        <span id="poweredby">Powered by Java on Aliyun(Linux)</span>
+        <span id="poweredby">Powered by Java</span>
 
         <br />
       </div>
