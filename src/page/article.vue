@@ -43,26 +43,25 @@
           <h2>虽千万人吾往矣</h2>
         </div>
         <div id="navigator">
-          <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
-            <el-menu-item index="1">
+          <el-menu class="el-menu-demo" mode="horizontal">
+            <el-menu-item>
               <el-link href="/" target="_self">首页</el-link>
             </el-menu-item>
-            <el-menu-item index="2">
-              <el-link href="/contact" target="_blank">联系</el-link>
+            <el-menu-item>
+              <el-link href="/contact" target="_self">联系</el-link>
             </el-menu-item>
-            <el-menu-item index="3">
-              <el-link href="/comment" target="_self">留言</el-link>
+            <el-menu-item>
+              <el-link target="_self">留言</el-link>
             </el-menu-item>
-            <el-menu-item index="4">
-              <el-link href="/editor" target="_blank">新文章</el-link>
+            <el-menu-item>
+              <el-link href="/editor" target="_self">新文章</el-link>
             </el-menu-item>
-            <el-menu-item index="5">
-              <el-link href="/management" target="_blank">后台管理</el-link>
+            <el-menu-item>
+              <el-link href="/management" target="_self">后台管理</el-link>
             </el-menu-item>
 
             <div class="blogStats">
               <span id="stats_article_count">文章-{{blogStat.articleCount}}&nbsp;</span>
-              <span id="stats_comment_count">评论-{{blogStat.commentCount}}&nbsp;</span>
               <span id="stats-visitor_count" display="none"></span>
             </div>
           </el-menu>
@@ -72,28 +71,35 @@
       <!--header-->
       <div id="main">
         <div id="mainContent">
+          
+          <div
+            v-loading="loading"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+          >
           <h1 class="articleTitle">
             <a :href="article.articleUrl">{{article.articleTitle}}</a>
           </h1>
           <div class="clear"></div>
-          <nossr>
-            <mavon-editor
-              style="height: 100%;margin-top: 15px"
-              v-model="article.articleMain"
-              :subfield="false"
-              :boxShadow="false"
-              defaultOpen="preview"
-              :toolbarsFlag="false"
-            />
-          </nossr>
+            <nossr>
+              <mavon-editor
+                style="height: 100%;margin-top: 15px"
+                v-model="article.articleMain"
+                :subfield="false"
+                :boxShadow="false"
+                defaultOpen="preview"
+                :toolbarsFlag="false"
+              />
+            </nossr>
 
-          <div id="copyright">
-            <p>本文作者:{{article.authorCode}}</p>
-            <p>
-              文章链接:
-              <a :href="article.articleUrl">{{article.articleUrl}}</a>
-            </p>
-            <p>版权声明:转载请联系作者并声明出处</p>
+            <div id="copyright">
+              <p>本文作者:{{article.authorCode}}</p>
+              <p>
+                文章链接:
+                <a :href="article.articleUrl">{{article.articleUrl}}</a>
+              </p>
+              <p>版权声明:转载请联系作者并声明出处</p>
+            </div>
           </div>
 
           <div id="vcomments"></div>
@@ -121,18 +127,6 @@
             </div>
             <div id="leftcontentcontainer">
               <div id="blog-sidecolumn">
-                <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
-                  <h3 class="catListTitle hotArticle">文章分类</h3>
-                  <ul>
-                    <li v-for="(item,i) in cateArtList" :key="i">
-                      <a href="#" target="_self">
-                        <span
-                          @click="queryByCategory(item.categoryId)"
-                        >{{item.categoryName}}({{item.count}})</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
                 <div id="sidebar_topviewedposts" class="sidebar-block">
                   <div class="catListView">
                     <h3 class="catListTitle">阅读排行榜</h3>
@@ -176,8 +170,8 @@ import vueCanvasNest from "vue-canvas-nest";
 import { clock } from "../static/js/clock";
 import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
-import Valine from 'valine';
-import $ from 'jquery';
+import Valine from "valine";
+import $ from "jquery";
 
 export default {
   components: {
@@ -203,24 +197,26 @@ export default {
         articleUrl: ""
       },
       hotArticle: [],
-      cateArtList: []
+      cateArtList: [],
+      loading: true
     };
   },
   methods: {
     createValine() {
-      const Valine = require('valine');
-      window.AV = require('leancloud-storage')
-      const valine =  new Valine({
-        el: '#vcomments',
-        appId: 'KMcB6K6smLzUtvAYso4rMNp6-gzGzoHsz',
-        appKey: 'Lj6y2pgfAhX4bNz3RwVvREIK',
+      const Valine = require("valine");
+      window.AV = require("leancloud-storage");
+      const valine = new Valine({
+        el: "#vcomments",
+        appId: "KMcB6K6smLzUtvAYso4rMNp6-gzGzoHsz",
+        appKey: "Lj6y2pgfAhX4bNz3RwVvREIK",
         notify: true,
         verify: false,
-        avatar: 'mp',
+        avatar: "mp",
         path: window.location.pathname,
-        placeholder: '欢迎留言与我分享您的想法,留言时填写邮箱可以及时收到回复提醒...',
+        placeholder:
+          "欢迎留言与我分享您的想法,留言时填写邮箱可以及时收到回复提醒..."
       });
-      this.valineRefresh = false
+      this.valineRefresh = false;
     },
     queryCategoryArticle() {
       this.$axios.get("/story/category/article").then(res => {
@@ -241,6 +237,7 @@ export default {
       this.id = this.$route.params.id;
       this.$axios.get("/story/article/" + this.id).then(res => {
         this.article = res.data.data;
+        this.loading = false;
       });
     }
   },
@@ -253,7 +250,7 @@ export default {
   mounted() {
     clock();
     this.createValine();
-    $('.info').hide();
+    $(".info").hide();
   }
 };
 </script>
@@ -298,9 +295,5 @@ export default {
   padding: 10px;
   margin-top: 20px;
   display: block;
-}
-
-.power .txt-right {
-  display: none !important;
 }
 </style>

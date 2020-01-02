@@ -1,4 +1,8 @@
 <template>
+<div>
+<div>
+<el-tag type="info"><el-link  :underline="false" href="/" target="_self">返回首页</el-link></el-tag>
+</div>
   <div id="editor">
     <div style="margin-top: 15px">
       <el-input placeholder="请输入内容" v-model="article.articleTitle">
@@ -38,6 +42,8 @@
       <el-button id="save" @click="save()" type="primary" plain>保存草稿</el-button>
     </div>
   </div>
+</div>
+  
 </template>
     <script>
 // Local Registration
@@ -70,6 +76,7 @@ export default {
             message: res.data.message,
             type: res.data.flag ? "success" : "error"
           });
+          window.location.href = "/"
         })
         .catch(err => {
           this.$message({

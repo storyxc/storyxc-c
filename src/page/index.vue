@@ -43,26 +43,25 @@
           <h2>虽千万人吾往矣</h2>
         </div>
         <div id="navigator">
-          <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
-            <el-menu-item index="1">
+          <el-menu  class="el-menu-demo" mode="horizontal">
+            <el-menu-item >
               <el-link href="/" target="_self">首页</el-link>
             </el-menu-item>
-            <el-menu-item index="2">
-              <el-link href="/contact" target="_blank">联系</el-link>
+            <el-menu-item>
+              <el-link href="/contact" target="_self">联系</el-link>
             </el-menu-item>
-            <el-menu-item index="3">
+            <el-menu-item>
               <el-link href="/comment" target="_self">留言</el-link>
             </el-menu-item>
-            <el-menu-item index="4">
-              <el-link href="/editor" target="_blank">新文章</el-link>
+            <el-menu-item >
+              <el-link href="/editor" target="_self">新文章</el-link>
             </el-menu-item>
-            <el-menu-item index="5">
-              <el-link href="/management" target="_blank">后台管理</el-link>
+            <el-menu-item >
+              <el-link href="/management" target="_self">后台管理</el-link>
             </el-menu-item>
 
             <div class="blogStats">
               <span id="stats_article_count">文章-{{blogStat.articleCount}}&nbsp;</span>
-              <span id="stats_comment_count">评论-{{blogStat.commentCount}}&nbsp;</span>
               <span id="stats-visitor_count" display="none"></span>
             </div>
           </el-menu>
@@ -71,8 +70,9 @@
       </div>
       <!--header-->
       <div id="main">
-        <div id="mainContent">
-          <div class="forFlow">
+        <div id="mainContent"  v-loading="loading" element-loading-text="拼命加载中"
+                      element-loading-spinner="el-icon-loading">
+          <div class="forFlow" >
             <div v-for="(item,i) in dataList" :key="i">
               <div class="day">
                 <div class="dayTitle">
@@ -89,7 +89,7 @@
                 </div>
                 <div class="clear"></div>
                 <div class="postDesc">
-                  posted @ {{item.createTime}} {{item.authorCode}} 阅读 ({{item.viewCount}}) 评论 ({{item.commentCount}})
+                  posted @ {{item.createTime}} {{item.authorCode}} 阅读 ({{item.viewCount}})
                   <a
                     href="#"
                     rel="nofollow"
@@ -208,7 +208,8 @@ export default {
       },
       cateArtList: [],
       blogStat: {},
-      hotArticle: []
+      hotArticle: [],
+      loading: true
     };
   },
   methods: {
@@ -216,6 +217,7 @@ export default {
       this.$axios.post("/story/article/findPage", this.pagination).then(res => {
         this.dataList = res.data.data.list;
         this.pagination.total = res.data.data.total;
+        this.loading = false;
       });
     },
     //切换页码

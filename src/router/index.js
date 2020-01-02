@@ -5,6 +5,7 @@ import Login from '@/page/login.vue'
 import Editor from '@/page/editor.vue'
 import IU from '@/page/iu.vue'
 import Article from '@/page/article.vue'
+import Comment from '@/page/comment.vue'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/article/:id',
       name: Article,
       component: Article
+    },
+    {
+      path: '/comment',
+      name: Comment,
+      component: Comment
     }
   ]
 })
