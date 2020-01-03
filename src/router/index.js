@@ -6,6 +6,8 @@ import Editor from '@/page/editor.vue'
 import IU from '@/page/iu.vue'
 import Article from '@/page/article.vue'
 import Comment from '@/page/comment.vue'
+import Management from '@/page/management.vue'
+import UserManagement from '@/page/user.vue'
 
 Vue.use(Router)
 
@@ -46,6 +48,16 @@ export default new Router({
       path: '/editor/:id',
       name: Editor,
       component: Editor
+    },
+    {
+      path: '/management',
+      name: Management,
+      component: Management
+    },
+    {
+      path: '/userManagement',
+      name: UserManagement,
+      component: UserManagement
     }
   ]
 })
