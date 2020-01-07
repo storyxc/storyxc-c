@@ -61,7 +61,7 @@
             </el-menu-item>
 
             <div class="blogStats">
-              <span id="stats_article_count">文章-{{blogStat.articleCount}}&nbsp;</span>
+              <span id="stats_article_count">文章 - {{blogStat.articleCount}}&nbsp;</span>
               <span id="stats-visitor_count" display="none"></span>
             </div>
           </el-menu>
@@ -251,6 +251,7 @@ export default {
     clock();
     this.createValine();
     $(".info").hide();
+    $(".v-note-wrapper").css("border","none");
   }
 };
 </script>

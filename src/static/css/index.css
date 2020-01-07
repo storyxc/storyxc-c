@@ -376,7 +376,7 @@ h1, h2, h3, h4, h5, h6 {
   
 }
 
-@media only screen and ( max-width: 900px ) {
+@media only screen and ( max-width: 768px ) {
   .blogStats {
     display: none;
   }
@@ -398,7 +398,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   #home {
     margin: 0 0 0 0;
-    width: 100%;
+    width: auto;
   }
   
   #container {
@@ -419,11 +419,4 @@ h1, h2, h3, h4, h5, h6 {
 ul li {
   list-style-type:none;
 }
-
-  .v-note-panel {
-    border: none !important;
-  }
-  .v-show-content {
-    background-color: white !important;
-  }
 }

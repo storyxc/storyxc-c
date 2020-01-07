@@ -1,16 +1,16 @@
 <template>
-  <div id="app">
+  <div>
     <div class="content-header">
       <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
         <el-breadcrumb-item>系统设置</el-breadcrumb-item>
-        <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+        <el-breadcrumb-item>菜单管理</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="app-container">
       <div class="box">
         <div class="filter-container">
           <el-input
-            placeholder="用户名/电话/邮箱"
+            placeholder="菜单名/描述"
             v-model="pagination.queryString"
             style="width: 200px;"
             class="filter-item"
@@ -21,15 +21,15 @@
         </div>
         <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
           <el-table-column type="index" align="center" label="序号"></el-table-column>
-          <el-table-column prop="username" label="用户名" align="center"></el-table-column>
-          <el-table-column prop="phone" label="联系电话" align="center"></el-table-column>
-          <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
-          <el-table-column prop="lastLogin" label="上次登录时间" align="center"></el-table-column>
-          <el-table-column label="性别" align="center">
-            <template slot-scope="scope">
-              <span>{{ scope.row.sex == '1' ? '男' : '女'}}</span>
-            </template>
-          </el-table-column>
+          <el-table-column prop="id" align="center" label="菜单ID"></el-table-column>
+          <el-table-column prop="name" label="菜单名" align="center"></el-table-column>
+          <el-table-column prop="linkUrl" label="链接" align="center"></el-table-column>
+          <el-table-column prop="path" label="路径" align="center"></el-table-column>
+          <el-table-column prop="priority" label="优先级" align="center"></el-table-column>
+          <el-table-column prop="icon" label="图标" align="center"></el-table-column>
+          <el-table-column prop="description" label="描述" align="center"></el-table-column>
+          <el-table-column prop="parentMenuId" label="父菜单ID" align="center"></el-table-column>
+          <el-table-column prop="level" label="level" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
@@ -52,7 +52,7 @@
         <!-- 新增标签弹层 -->
         <div class="add-form">
           <el-dialog
-            title="新增用户"
+            title="新增菜单"
             :visible.sync="dialogFormVisible"
             :close-on-click-modal="dialogAutoExit"
           >
@@ -68,72 +68,52 @@
                   >
                     <el-row>
                       <el-col :span="12">
-                        <el-form-item label="用户名" prop="username">
-                          <el-input v-model="formData.username" />
+                        <el-form-item label="菜单名" prop="name">
+                          <el-input v-model="formData.name" />
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
-                        <el-form-item label="密码" prop="password">
-                          <el-input type="password" v-model="formData.password" />
+                        <el-form-item label="链接" prop="linkUrl">
+                          <el-input v-model="formData.linkUrl" />
                         </el-form-item>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="12">
-                        <el-form-item label="性别" prop="sex">
-                          <el-select v-model="formData.sex">
-                            <el-option label="男" value="1"></el-option>
-                            <el-option label="女" value="0"></el-option>
-                          </el-select>
+                        <el-form-item label="路径" prop="path">
+                          <el-input v-model="formData.path" />
                         </el-form-item>
                       </el-col>
 
                       <el-col :span="12">
-                        <el-form-item label="邮箱" prop="email">
-                          <el-input v-model="formData.email" />
+                        <el-form-item label="优先级" prop="priority">
+                          <el-input v-model="formData.priority" />
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
-                        <el-form-item label="手机号">
-                          <el-input v-model="formData.phone" />
+                        <el-form-item label="图标" prop="icon">
+                          <el-input v-model="formData.icon" />
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item label="描述" prop="description">
+                          <el-input v-model="formData.description" />
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="12">
+                        <el-form-item label="父菜单ID" prop="parentMenuId">
+                          <el-input v-model="formData.parentMenuId" />
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item label="级别" prop="level">
+                          <el-input v-model="formData.level" />
                         </el-form-item>
                       </el-col>
                     </el-row>
                   </el-form>
-                </el-tab-pane>
-                <el-tab-pane label="用户角色信息" name="second">
-                  <div class="checkScrol">
-                    <table class="datatable">
-                      <thead>
-                        <tr>
-                          <th>选择</th>
-                          <th>角色ID</th>
-                          <th>角色名称</th>
-                          <th>角色关键字</th>
-                          <th>角色说明</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(r,i) in tableData" :key="i">
-                          <td>
-                            <input :id="r.id" v-model="roleIds" type="checkbox" :value="r.id" />
-                          </td>
-                          <td>
-                            <label :for="r.id">{{r.id}}</label>
-                          </td>
-                          <td>
-                            <label :for="r.id">{{r.name}}</label>
-                          </td>
-                          <td>
-                            <label :for="r.id">{{r.keyword}}</label>
-                          </td>
-                          <td>
-                            <label :for="r.id">{{r.description}}</label>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
                 </el-tab-pane>
               </el-tabs>
             </template>
@@ -146,7 +126,7 @@
         <!--编辑标签弹层-->
         <div class="add-form">
           <el-dialog
-            title="编辑用户"
+            title="编辑菜单"
             :visible.sync="dialogFormVisible4Edit"
             :close-on-click-modal="dialogAutoExit"
           >
@@ -162,72 +142,53 @@
                   >
                     <el-row>
                       <el-col :span="12">
-                        <el-form-item label="用户名" prop="username">
-                          <el-input v-model="formData.username" />
+                        <el-form-item label="菜单名" prop="name">
+                          <el-input v-model="formData.name" />
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
-                        <el-form-item label="密码" prop="password">
-                          <el-input type="password" v-model="formData.password" />
+                        <el-form-item label="链接" prop="linkUrl">
+                          <el-input v-model="formData.linkUrl" />
                         </el-form-item>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="12">
-                        <el-form-item label="性别" prop="sex">
-                          <el-select v-model="formData.sex">
-                            <el-option label="男" value="1"></el-option>
-                            <el-option label="女" value="0"></el-option>
-                          </el-select>
-                        </el-form-item>
-                      </el-col>
-
-                      <el-col :span="12">
-                        <el-form-item label="邮箱" prop="email">
-                          <el-input v-model="formData.email" />
+                        <el-form-item label="路径" prop="path">
+                          <el-input v-model="formData.path" />
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
-                        <el-form-item label="手机号">
-                          <el-input v-model="formData.phone" />
+                        <el-form-item label="优先级" prop="priori">
+                          <el-input v-model="formData.priority" />
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="12">
+                        <el-form-item label="图标" prop="icon">
+                          <el-input v-model="formData.icon" />
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item label="描述" prop="description">
+                          <el-input v-model="formData.description" />
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="12">
+                        <el-form-item label="父菜单ID" prop="parentMenuId">
+                          <el-input v-model="formData.parentMenuId" />
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item label="级别" prop="level">
+                          <el-input v-model="formData.level" />
                         </el-form-item>
                       </el-col>
                     </el-row>
                   </el-form>
-                </el-tab-pane>
-                <el-tab-pane label="用户角色信息" name="second">
-                  <div class="checkScrol">
-                    <table class="datatable">
-                      <thead>
-                        <tr>
-                          <th>选择</th>
-                          <th>角色ID</th>
-                          <th>角色名称</th>
-                          <th>角色关键字</th>
-                          <th>角色说明</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(r,i) in tableData" :key="i">
-                          <td>
-                            <input :id="r.id" v-model="roleIds" type="checkbox" :value="r.id" />
-                          </td>
-                          <td>
-                            <label :for="r.id">{{r.id}}</label>
-                          </td>
-                          <td>
-                            <label :for="r.id">{{r.name}}</label>
-                          </td>
-                          <td>
-                            <label :for="r.id">{{r.keyword}}</label>
-                          </td>
-                          <td>
-                            <label :for="r.id">{{r.description}}</label>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
                 </el-tab-pane>
               </el-tabs>
             </template>
@@ -243,7 +204,7 @@
 </template>
 <script>
 export default {
-  name: "userManagement",
+  name: "menuManagement",
   data() {
     return {
       dialogAutoExit: false, //弹窗不自动关闭
@@ -252,31 +213,30 @@ export default {
         //分页相关属性
         currentPage: 1,
         pageSize: 10,
-        total: 0,
+        total: 50,
         queryString: null
       },
       dataList: [], //列表数据
       formData: {}, //表单数据
-      tableData: [], //添加表单窗口中角色列表数据
-      roleIds: [], //添加表单窗口中role复选框对应id
       dialogFormVisible: false, //控制添加窗口显示/隐藏
       dialogFormVisible4Edit: false, //控制编辑窗口显示/隐藏
 
       rules: {
         //表单检验
-        username: [
-          { required: true, message: "用户名称为必填项", trigger: "blur" }
+        name: [
+          { required: true, message: "菜单名称为必填项", trigger: "blur" }
         ],
-        password: [
-          { required: true, message: "密码为必填项", trigger: "blur" }
+        priority: [
+          { required: true, message: "优先级为必填项", trigger: "blur" }
         ],
-        sex: [{ required: true, message: "性别为必填项", trigger: "blur" }],
-        email: [{ required: true, message: "邮箱为必填项", trigger: "blur" }]
+        path: [{ required: true, message: "路径为必填项", trigger: "blur" }],
+        level: [{ required: true, message: "级别为必填项", trigger: "blur" }]
       }
     };
   },
   created() {
-      this.findPage();
+    //页面自动加载分页数据
+    this.findPage();
   },
   methods: {
     // 弹出添加窗口
@@ -288,54 +248,28 @@ export default {
         //将表单验证结果清空
         this.$refs["dataAddForm"].clearValidate();
       } catch (e) {}
-      //获得所有角色信息
-      this.$axios
-        .get("/story/role")
-        .then(res => {
-          if (res.data.flag) {
-            this.tableData = res.data.data;
-          }
-        })
-        .catch(res => {});
     },
     //更新
     handleEdit() {
       this.dialogFormVisible4Edit = false;
-      this.$axios
-        .put("/story/user?roleIds=" + this.roleIds, this.formData)
-        .then(res => {
-          this.$message({
-            message: res.data.message,
-            type: res.data.flag ? "success" : "error"
-          });
-          if (res.data.flag) {
-            this.findPage();
-          }
+      this.$axios.put("/story/menu", this.formData).then(res => {
+        this.$message({
+          message: res.data.message,
+          type: res.data.flag ? "success" : "error"
         });
+        if (res.data.flag) {
+          this.findPage();
+        }
+      });
     },
 
     //编辑弹层(获取当前编辑项信息)
     handleUpdate(row) {
       this.resetForm();
       this.dialogFormVisible4Edit = true;
-      this.$axios.get("/story/user?id=" + row.id).then(res => {
+      this.$axios.get("/story/menu?id=" + row.id).then(res => {
         if (res.data.flag) {
           this.formData = res.data.data;
-          this.$axios.get("/story/role").then(res => {
-            if (res.data.flag) {
-              this.tableData = res.data.data;
-              this.$axios
-                .post("/story/user/getRoleIdsByUserId?id=" + row.id)
-                .then(res => {
-                  this.roleIds = res.data.data;
-                });
-            } else {
-              this.$message({
-                message: res.data.message,
-                type: "error"
-              });
-            }
-          });
         } else {
           this.$message({
             message: res.data.message,
@@ -344,7 +278,7 @@ export default {
         }
       });
     },
-    //删除
+    //删除菜单
     handleDelete(row) {
       this.$confirm("此操作将永久删除该记录, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -353,7 +287,7 @@ export default {
       })
         .then(() => {
           var id = row.id;
-          this.$axios.delete("/story/user?id=" + id).then(res => {
+          this.$axios.delete("/story/menu?id=" + id).then(res => {
             this.$message({
               message: res.data.message,
               type: res.data.flag ? "success" : "error"
@@ -376,15 +310,13 @@ export default {
       this.$refs["dataAddForm"].validate(valid => {
         // 所有验证通过后才会为true,只要有一个失败就是false
         if (valid) {
-          this.$axios
-            .post("/story/user?roleIds=" + this.roleIds, this.formData)
-            .then(res => {
-              this.$message({
-                message: res.data.message,
-                type: res.data.flag ? "success" : "error"
-              });
-              this.findPage();
+          this.$axios.post("/story/menu", this.formData).then(res => {
+            this.$message({
+              message: res.data.message,
+              type: res.data.flag ? "success" : "error"
             });
+            this.findPage();
+          });
           this.dialogFormVisible = false;
         } else {
           // console.log('error submit!!');
@@ -393,17 +325,11 @@ export default {
         }
       });
     },
+    //分页查询
     findPage() {
-      this.$axios.post("/story/user/findPage", this.pagination).then(res => {
-        if (res.data.flag) {
-          this.dataList = res.data.data.list;
-          this.pagination.total = res.data.data.total;
-        } else {
-          this.$message({
-            message: res.data.message,
-            type: "error"
-          });
-        }
+      this.$axios.post("/story/menu/findPage", this.pagination).then(res => {
+        this.dataList = res.data.data.list;
+        this.pagination.total = res.data.data.total;
       });
     },
     // 切换每页记录条数时，需要刷新列表
@@ -427,6 +353,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "../static/css/style.css";
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
@@ -488,11 +415,13 @@ export default {
 }
 
 .content-header > .breadcrumb {
+  float: left;
   background: transparent;
   margin-top: 0;
-  margin-bottom: 5px;
+  margin-bottom: 0;
   font-size: 16px;
   padding: 4px;
+  position: absolute;
   width: 200px;
   top: 4px;
   left: 10px;
@@ -501,9 +430,13 @@ export default {
 
 .el-breadcrumb {
   font-size: 14px;
-  line-height: 18px;
+  line-height: 1;
 }
-.filter-container {
-  margin: 0 0 5px 0;
+
+.pagination-container {
+  text-align: center;
+}
+body {
+  overflow: hidden;
 }
 </style>
