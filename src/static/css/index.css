@@ -6,7 +6,7 @@ body {
   text-shadow: 0 0 1px transparent;
   color: #505050;
 }
-a hove {
+a :hover {
   text-decoration: none !important;
 }
 div:focus{
@@ -49,7 +49,7 @@ a {
   width: 80%;
   background-color: #fff;
   padding: 30px;
-  margin-top: 50px;
+  padding-top: 60px;
   margin-bottom: 50px;
   box-shadow: 0 2px 6px rgba(100, 100, 100, 0.3);
   border-radius: 20px;
@@ -78,6 +78,7 @@ a {
 .day .dayTitle {
   display: none !important;
 }
+
 
 #blogTitle {
   width: 23%;
@@ -377,24 +378,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media only screen and ( max-width: 768px ) {
-  .blogStats {
-    display: none;
-  }
-  #sideBar {
-    display: none;
-  }
-
   #mainContent {
     height: auto;
     width: 100%;
     margin: 0 0;
   }
 
+  #editItem,#manageItem,#Header1_HeaderTitle,.blogStats,#sideBar,#blogTitle h2  {
+    display: none;
+  }
+  #navigator ul li {
+    float: left;
+    width: 33%;
+    text-align: center;
+    margin-right: 0px;
+}
+  #blogTitle {
+    text-align: center;
+    width: 100%;
+  }
   #indexHeader #Header1_HeaderTitle {
     font-size: 20px;
-  }
-  #blogTitle h2 {
-      display: none;
   }
   #home {
     margin: 0 0 0 0;
@@ -408,6 +412,7 @@ h1, h2, h3, h4, h5, h6 {
   .catListTitle h3 {
     font-size: 14px;
   }
+
 
 
 

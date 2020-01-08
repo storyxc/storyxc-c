@@ -20,67 +20,54 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Index',
       component: Index
     },
     {
       path: '/login',
-      name: 'Login',
       component: Login
     },
     {
       path: '/editor',
-      name: Editor,
       component: Editor
     },
     {
       path: '/iu',
-      name: IU,
       component: IU
     },
     {
       path: '/article/:id',
-      name: Article,
       component: Article
     },
     {
       path: '/comment',
-      name: Comment,
       component: Comment
     },
     {
       path: '/editor/:id',
-      name: Editor,
       component: Editor
     },
     {
       path: '/management',
-      name: Management,
       component: Management
     },
     {
       path: '/userManagement',
-      name: UserManagement,
       component: UserManagement
     },
     {
       path: '/permissionManagement',
-      name: PermissionManagement,
       component: PermissionManagement
     },
     {
       path: '/indexManagement',
-      name: IndexManagement,
       component: IndexManagement
     },
     {
       path: '/roleManagement',
-      name: RoleManagement,
       component: RoleManagement
     },
     {
       path: '/menuManagement',
-      name: MenuManagement,
       component: MenuManagement
     }
   ]

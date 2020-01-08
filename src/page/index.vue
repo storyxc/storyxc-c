@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <vue-canvas-nest :config="{color:'0,0,0', count: 120}" :el="'#app'"></vue-canvas-nest>
+  <div id="ap">
+    <vue-canvas-nest :config="{color:'0,0,0', count: 166}" :el="'#app'"></vue-canvas-nest>
     <!--github-->
     <a href="https://github.com/storyxc" class="github-corner" aria-label="View source on Github">
       <svg
@@ -43,7 +43,7 @@
           <h2>虽千万人吾往矣</h2>
         </div>
         <div id="navigator">
-          <el-menu  class="el-menu-demo" mode="horizontal">
+          <el-menu  class="el-menu-demo" mode="horizontal" id="elMenuUl">
             <el-menu-item >
               <el-link href="/" target="_self">首页</el-link>
             </el-menu-item>
@@ -54,10 +54,10 @@
               <el-link href="/comment" target="_self">留言</el-link>
             </el-menu-item>
             <el-menu-item >
-              <el-link href="/editor" target="_self">发布文章</el-link>
+              <el-link href="/editor" target="_self" id="editItem">发布文章</el-link>
             </el-menu-item>
             <el-menu-item >
-              <el-link href="/management" target="_self">后台管理</el-link>
+              <el-link href="/management" target="_self" id="manageItem">后台管理</el-link>
             </el-menu-item>
 
             <div class="blogStats">
@@ -189,6 +189,7 @@
 <script>
 import vueCanvasNest from "vue-canvas-nest";
 import { clock } from "../static/js/clock";
+import $ from 'jquery'
 
 export default {
   components: { vueCanvasNest },
@@ -250,6 +251,8 @@ export default {
     this.queryCategoryArticle();
     this.queryBlogStat();
     this.queryHotArticle();
+    $("body").css("background","#F7F7F7");
+    $("body").css("margin","0");
   },
   mounted() {
     clock();
@@ -258,4 +261,5 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "../static/css/index.css";
+
 </style>

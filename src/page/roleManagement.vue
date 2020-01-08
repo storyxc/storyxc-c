@@ -394,19 +394,17 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$axios
-            .delete("/story/role?id="+row.id)
-            .then(res => {
-              this.$message({
-                message: res.data.message,
-                type: res.data.flag ? "success" : "error"
-              });
-              // 如果成功
-              if (res.data.flag) {
-                // 刷新列表
-                this.findPage();
-              }
+          this.$axios.delete("/story/role?id=" + row.id).then(res => {
+            this.$message({
+              message: res.data.message,
+              type: res.data.flag ? "success" : "error"
             });
+            // 如果成功
+            if (res.data.flag) {
+              // 刷新列表
+              this.findPage();
+            }
+          });
         })
         .catch(() => {
           // 取消时调用
@@ -437,6 +435,21 @@ export default {
               // 存入选中的权限列表
               this.permissionIds.push(item.id);
             }
+            //选中的菜单(不包括父菜单)
+            var catch_menu = [];
+            //全部菜单(包括父菜单)
+            var all_menu = [];
+            var MenueObjList = res.data.data.menus;
+            for (var item of MenueObjList) {
+              //将父菜单取消,不能选中,如果选中了父菜单,将会把子菜单全选中
+              if (item.parentMenuId) {
+                // 存入角色对应的菜单
+                catch_menu.push(item.id);
+              }
+              all_menu.push(item.id);
+            }
+            this.menuIds = catch_menu;
+            this.menuIds_up = all_menu;
 
             //获得所有权限集合
             this.$axios
@@ -472,44 +485,6 @@ export default {
               })
               .catch(res => {
                 this.$message.error(res.data.message);
-              });
-
-            //获取角色关联的菜单集合
-            this.$axios
-              .get("/story/role/getMenuById", {
-                params: {
-                  id: id
-                }
-              })
-              .then(res => {
-                if (res.data.flag) {
-                  //选中的菜单(不包括父菜单)
-                  var catch_menu = [];
-                  //全部菜单(包括父菜单)
-                  var all_menu = [];
-                  var MenueObjList = res.data.data.menus;
-                  for (var item of MenueObjList) {
-                    //将父菜单取消,不能选中,如果选中了父菜单,将会把子菜单全选中
-                    if (item.parentMenuId) {
-                      // 存入角色对应的菜单
-                      catch_menu.push(item.id);
-                    }
-                    all_menu.push(item.id);
-                  }
-                  this.menuIds = catch_menu;
-                  this.menuIds_up = all_menu;
-                } else {
-                  this.$message({
-                    message: res.data.message,
-                    type: "error"
-                  });
-                }
-              })
-              .catch(res => {
-                this.$message({
-                  message: res.data.message,
-                  type: "error"
-                });
               });
           }
         });

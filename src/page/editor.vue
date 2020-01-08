@@ -11,7 +11,11 @@
           <template slot="prepend">文章标题</template>
         </el-input>
       </div>
-      <mavon-editor style="height: 100%;margin-top: 15px" v-model="article.articleMain"></mavon-editor>
+      <mavon-editor ref="md" style="height: 100%;margin-top: 15px" v-model="article.articleMain"
+      @imgAdd="imgAdd" @imgDel="imgDel"
+      >
+
+      </mavon-editor>
 
       <div id="category" style="margin-top: 15px">
         <el-tag>请选择分类</el-tag>
@@ -74,6 +78,21 @@ export default {
     };
   },
   methods: {
+    imgAdd(filename,file){
+      var formData = new FormData();
+      formData.append('file',file);
+      this.$axios({
+        url: '/story/file',
+        method: 'post',
+        data: formData,
+        headers: {'Content-Type': 'multipart/form-data'}
+      }).then(res=>{
+        this.$refs.md.$img2Url(filename,res.data.data);
+      })
+    },
+    imgDel(){
+
+    },
     publish() {
       this.$axios
         .post("/story/article", this.article)
