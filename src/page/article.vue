@@ -43,21 +43,21 @@
           <h2>虽千万人吾往矣</h2>
         </div>
         <div id="navigator">
-          <el-menu class="el-menu-demo" mode="horizontal">
-            <el-menu-item>
+          <el-menu  class="el-menu-demo" mode="horizontal" id="elMenuUl">
+            <el-menu-item >
               <el-link href="/" target="_self">首页</el-link>
             </el-menu-item>
             <el-menu-item>
               <el-link href="/contact" target="_self">联系</el-link>
             </el-menu-item>
             <el-menu-item>
-              <el-link target="_self">留言</el-link>
+              <el-link href="/comment" target="_self">留言</el-link>
             </el-menu-item>
-            <el-menu-item>
-              <el-link href="/editor" target="_self">发布文章</el-link>
+            <el-menu-item >
+              <el-link href="/editor" target="_self" id="editItem">发布文章</el-link>
             </el-menu-item>
-            <el-menu-item>
-              <el-link href="/management" target="_self">后台管理</el-link>
+            <el-menu-item >
+              <el-link href="/management" target="_self" id="manageItem">后台管理</el-link>
             </el-menu-item>
 
             <div class="blogStats">

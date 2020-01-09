@@ -12,6 +12,7 @@ import PermissionManagement from '@/page/permissionManagement.vue'
 import IndexManagement from '@/page/IndexManagement.vue'
 import RoleManagement from '@/page/roleManagement.vue'
 import MenuManagement from '@/page/menuManagement.vue'
+import ArticleManagement from '@/page/ArticleManagement'
 
 Vue.use(Router)
 
@@ -69,6 +70,10 @@ export default new Router({
     {
       path: '/menuManagement',
       component: MenuManagement
+    },
+    {
+      path: '/articleManagement',
+      component: ArticleManagement
     }
   ]
 })
