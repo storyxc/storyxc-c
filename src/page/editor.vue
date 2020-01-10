@@ -82,7 +82,7 @@ export default {
       var formData = new FormData();
       formData.append('file',file);
       this.$axios({
-        url: '/story/file',
+        url: '/story/file?type=article',
         method: 'post',
         data: formData,
         headers: {'Content-Type': 'multipart/form-data'}
