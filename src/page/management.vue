@@ -21,7 +21,7 @@
               </div>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item divided command="changePwd">
-                  <span style="display:block;">修改密码</span>
+                  <span style="display:block;" @click="handleUpdate()">修改密码</span>
                 </el-dropdown-item>
                 <el-dropdown-item divided command="logout">
                   <span style="display:block;">退出</span>
@@ -60,6 +60,40 @@
         </el-container>
       </el-container>
     </el-container>
+
+    <!--编辑标签弹层-->
+    <div class="add-form" id="changePwd">
+      <el-dialog
+        title="修改密码"
+        :visible.sync="dialogFormVisible4Edit"
+        :close-on-click-modal="dialogAutoExit"
+      >
+        <template>
+          <el-form
+            ref="dataEditForm"
+            :model="formData"
+            :rules="rules"
+            label-position="right"
+            label-width="100px"
+          >
+            <el-col :span="12">
+              <el-form-item label="旧密码" prop="pastPassword">
+                <el-input type="password" v-model="formData.pastPassword" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="新密码" prop="newPassword">
+                <el-input type="password" v-model="formData.newPassword" />
+              </el-form-item>
+            </el-col>
+          </el-form>
+        </template>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible4Edit = false">取消</el-button>
+          <el-button type="primary" @click="handleEdit()">确定</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -70,7 +104,9 @@ export default {
       username: "",
       menuListActive: [],
       menuActiveURL: "/roleManagement",
-      loading: false
+      loading: false,
+      dialogFormVisible4Edit: false,
+      formData: {}
     };
   },
   created() {
@@ -106,10 +142,20 @@ export default {
           })
           .catch(window.location.reload());
       }
-      //修改密码操作
-      if ("changePwd" === command) {
-        this.$message("你选择了修改密码");
-      }
+    },
+    handleEdit() {
+      this.$axios.put("/story/user/changePwd", this.formData).then(res => {
+        if (res.data.flag) {
+          this.dialogFormVisible4Edit = false;
+        }
+        this.$message({
+          type: res.data.flag,
+          message: res.data.message
+        });
+      });
+    },
+    handleUpdate() {
+      this.dialogFormVisible4Edit = true;
     }
   }
 };
