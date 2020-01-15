@@ -47,6 +47,9 @@
             <el-menu-item >
               <el-link href="/" target="_self">首页</el-link>
             </el-menu-item>
+            <el-menu-item >
+              <el-link href="/images" target="_blank">壁纸</el-link>
+            </el-menu-item>
             <el-menu-item>
               <el-link href="/contact" target="_self">联系</el-link>
             </el-menu-item>
@@ -54,7 +57,7 @@
               <el-link href="/comment" target="_self">留言</el-link>
             </el-menu-item>
             <el-menu-item >
-              <el-link href="/editor" target="_self" id="editItem">发布文章</el-link>
+              <el-link href="/editor" target="_blank" id="editItem">发布文章</el-link>
             </el-menu-item>
             <el-menu-item >
               <el-link href="/management" target="_self" id="manageItem">后台管理</el-link>

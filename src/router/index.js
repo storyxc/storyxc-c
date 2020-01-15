@@ -12,7 +12,8 @@ import PermissionManagement from '@/page/permissionManagement.vue'
 import IndexManagement from '@/page/IndexManagement.vue'
 import RoleManagement from '@/page/roleManagement.vue'
 import MenuManagement from '@/page/menuManagement.vue'
-import ArticleManagement from '@/page/ArticleManagement'
+import ArticleManagement from '@/page/articleManagement.vue'
+import Images from '@/page/images.vue'
 
 Vue.use(Router)
 
@@ -24,32 +25,60 @@ export default new Router({
       component: Index
     },
     {
+      path: '/images',
+      component: Images,
+      meta: {
+        title: '必应壁纸 - 故事而已'
+      }
+    },
+    {
       path: '/login',
-      component: Login
+      component: Login,
+      meta: {
+        title: '登录 - 故事而已'
+      }
     },
     {
       path: '/editor',
-      component: Editor
+      component: Editor,
+      meta: {
+        title: '编辑器 - 故事而已'
+      }
     },
     {
       path: '/iu',
-      component: IU
+      component: IU,
+      meta: {
+        title: 'IU - 故事而已'
+      }
     },
     {
       path: '/article/:id',
-      component: Article
+      component: Article,
+      meta: {
+        title: '文章'
+      }
     },
     {
       path: '/comment',
-      component: Comment
+      component: Comment,
+      meta: {
+        title: '留言板 - 故事而已'
+      }
     },
     {
       path: '/editor/:id',
-      component: Editor
+      component: Editor,
+      meta: {
+        title: '编辑器 - 故事而已'
+      }
     },
     {
       path: '/management',
-      component: Management
+      component: Management,
+      meta: {
+        title: '后台管理 - 故事而已'
+      }
     },
     {
       path: '/userManagement',
