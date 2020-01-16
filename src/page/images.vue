@@ -1,19 +1,16 @@
 <template>
   <div id="app1" oncontextmenu="self.event.returnValue=false">
-    <div class="container" >
+    <div class="container">
       <div>
         <a href="/" class="logo" style="text-align:center">
-            <span class="logo-lg">
-              <img src="/static/logo.png" />
-            </span>
-          </a>
+          <span class="logo-lg">
+            <img src="/static/logo.png" />
+          </span>
+        </a>
       </div>
-      <div class="item"  v-for="(item,i) in imageList" :key="i">
+      <div class="item" v-for="(item,i) in imageList" :key="i">
         <div class="card progressive">
-          <img
-            class="progressive__img progressive--not-loaded"
-            :src="item.fullUrl"
-          />
+          <img class="progressive__img progressive--not-loaded" :src="item.fullUrl" />
           <a class="mark" :href="noDir"></a>
           <div class="description">
             <i :class="location"></i>
@@ -28,12 +25,7 @@
               <i class="icon icon-heart" :class="heart"></i>
               <em class="t">{{item.likeCount}}</em>
             </span>
-            <a
-              class="ctrl download"
-              href="#"
-              target="_blank"
-              rel="nofollow"
-            >
+            <a class="ctrl download" href="#" target="_blank" rel="nofollow">
               <i class="icon icon-download" :class="download"></i>
               <em class="t">{{item.downloadCount}}</em>
             </a>
@@ -57,17 +49,16 @@
       <p>
         所有图片均来自
         <a rel="nofollow" href="http://cn.bing.com" target="_blank">必应搜索</a>
-      </p>
-      Copyright © 2019-2020
-        <a href="http://www.storyxc.com">故事而已</a>
-        <a href="http://www.beian.miit.gov.cn/" target="_blank">豫ICP备19046036号</a>
-        <br />
-        <span id="poweredby">Powered by Java</span>
+      </p>Copyright © 2019-2020
+      <a href="http://www.storyxc.com">故事而已</a>
+      <a href="http://www.beian.miit.gov.cn/" target="_blank">豫ICP备19046036号</a>
+      <br />
+      <span id="poweredby">Powered by Java</span>
     </div>
   </div>
 </template>
 <script>
-import $ from 'jquery'
+import $ from "jquery";
 
 export default {
   name: "images",
@@ -85,24 +76,37 @@ export default {
       calendar: "el-icon-date",
       download: "el-icon-download",
       heart: "el-icon-s-flag",
-      noDir: '#'
+      noDir: "#"
     };
   },
   created() {
-      this.findPage();
-      $(document).on('keydown', function (e) {
-        e = e.event || window.event;
-        if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) return false
-    })
+    this.findPage();
+    $(document).on("keydown", function(e) {
+      e = e.event || window.event;
+      if (
+        e.keyCode == 123 ||
+        (e.ctrlKey && e.shiftKey && e.keyCode == 73) ||
+        (e.ctrlKey && e.keyCode == 85)
+      )
+        return false;
+    });
   },
   methods: {
-      findPage(){
-        this.$axios.post("/story/image/findPage",this.pagination).then(res=>{
-            this.imageList = res.data.data.list;
-            this.pagination.total = res.data.data.total;
-            this.loading = false;
-        })
-      }
+    findPage() {
+      this.$axios.post("/story/image/findPage", this.pagination).then(res => {
+        this.imageList = res.data.data.list;
+        this.pagination.total = res.data.data.total;
+        this.loading = false;
+      });
+    },
+    handleCurrentChange(currentPage) {
+      this.pagination.currentPage = currentPage;
+      this.findPage();
+    },
+    handleSizeChange(currentSize) {
+      this.pagination.pageSize = currentSize;
+      this.findPage();
+    }
   }
 };
 </script>
@@ -138,8 +142,8 @@ export default {
   display: table;
   content: "";
 }
-.copyright{
-    color: #999;
+.copyright {
+  color: #999;
 }
 
 .clearfix::after {
