@@ -384,7 +384,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 0;
   }
 
-  #editItem,#manageItem,#Header1_HeaderTitle,.blogStats,#sideBar,#blogTitle h2  {
+  #Header1_HeaderTitle,.blogStats,#sideBar,#blogTitle h2  {
     display: none;
   }
   #navigator ul li {
@@ -424,4 +424,7 @@ h1, h2, h3, h4, h5, h6 {
 ul li {
   list-style-type:none;
 }
+}
+.page-up{
+  display: block !important;
 }

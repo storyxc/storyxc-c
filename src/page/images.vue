@@ -21,11 +21,11 @@
             </p>
           </div>
           <div class="options">
-            <span class="ctrl heart">
+            <span class="ctrl heart" @click="handleLike(item)">
               <i class="icon icon-heart" :class="heart"></i>
               <em class="t">{{item.likeCount}}</em>
             </span>
-            <a class="ctrl download" href="#" target="_blank" rel="nofollow">
+            <a class="ctrl download" :href="'/story/file/download?flag='+item.date+'&type=image'" target="_blank">
               <i class="icon icon-download" :class="download"></i>
               <em class="t">{{item.downloadCount}}</em>
             </a>
@@ -41,6 +41,7 @@
         :current-page="pagination.currentPage"
         :page-sizes="[12,24,36,48]"
         :page-size="pagination.pageSize"
+        :pager-count="11"
         layout="total,sizes,prev, pager, next, jumper"
         :total="pagination.total"
       ></el-pagination>
@@ -106,6 +107,15 @@ export default {
     handleSizeChange(currentSize) {
       this.pagination.pageSize = currentSize;
       this.findPage();
+    },
+    handleLike(item){
+      this.$axios.get("/story/image/like",{
+        params:{
+          date: item.date
+        }
+      }).then(res=>{
+        item.likeCount = res.data.data;
+      })
     }
   }
 };

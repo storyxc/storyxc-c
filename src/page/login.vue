@@ -14,7 +14,7 @@
             <label>Password</label>
             <input type="password" name="password" id="password" class="form-control input-block"/>
             <div style="text-align: center;">
-                <button style="color: #06b6ef;border-radius: 10px" type="submit" >登录</button>
+                <el-button style="color: #06b6ef;border-radius: 10px" native-type="submit" >登录</el-button>
             </div>
         </form>
         <p>没有账号?
