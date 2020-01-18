@@ -25,7 +25,11 @@
               <i class="icon icon-heart" :class="heart"></i>
               <em class="t">{{item.likeCount}}</em>
             </span>
-            <a class="ctrl download" :href="'/story/file/download?flag='+item.date+'&type=image'" target="_blank">
+            <a
+              class="ctrl download"
+              :href="'/story/file/download?flag='+item.date+'&type=image'"
+              target="_blank"
+            >
               <i class="icon icon-download" :class="download"></i>
               <em class="t">{{item.downloadCount}}</em>
             </a>
@@ -36,13 +40,10 @@
     <div class="page">
       <el-pagination
         class="pagiantion"
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="pagination.currentPage"
-        :page-sizes="[12,24,36,48]"
         :page-size="pagination.pageSize"
-        :pager-count="11"
-        layout="total,sizes,prev, pager, next, jumper"
+        layout="prev, pager, next, jumper"
         :total="pagination.total"
       ></el-pagination>
     </div>
@@ -70,7 +71,7 @@ export default {
         //分页相关属性
         currentPage: 1,
         pageSize: 12,
-        total: 1,
+        total: 1000,
         queryString: null
       },
       location: "el-icon-map-location",
@@ -91,6 +92,11 @@ export default {
       )
         return false;
     });
+    $(document).ready(function(){
+      if($(window).width()<=640){
+        $(".el-pagination__jump").hide();
+      }
+    });
   },
   methods: {
     findPage() {
@@ -104,18 +110,18 @@ export default {
       this.pagination.currentPage = currentPage;
       this.findPage();
     },
-    handleSizeChange(currentSize) {
-      this.pagination.pageSize = currentSize;
-      this.findPage();
-    },
-    handleLike(item){
-      this.$axios.get("/story/image/like",{
-        params:{
-          date: item.date
-        }
-      }).then(res=>{
-        item.likeCount = res.data.data;
-      })
+    handleLike(item) {
+      this.$axios
+        .get("/story/image/like", {
+          params: {
+            date: item.date
+          }
+        })
+        .then(res => {
+          if (res.data.flag) {
+            item.likeCount = res.data.data;
+          }
+        });
     }
   }
 };
