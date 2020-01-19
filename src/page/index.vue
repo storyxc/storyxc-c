@@ -213,7 +213,9 @@ export default {
       cateArtList: [],
       blogStat: {},
       hotArticle: [],
-      loading: true
+      loading: true,
+      visitCount: '',
+      visitorCount: ''
     };
   },
   methods: {
@@ -247,6 +249,12 @@ export default {
       this.$axios.get("/story/article/hot").then(res => {
         this.hotArticle = res.data.data;
       });
+    },
+    accessRecord(){
+      this.$axios.get("/story/access/visit").then(res=>{
+        this.visitCount = res.data.data.visitCount;
+        this.visitorCount = res.data.data.visitorCount;
+      })
     }
   },
   created() {
@@ -254,6 +262,7 @@ export default {
     this.queryCategoryArticle();
     this.queryBlogStat();
     this.queryHotArticle();
+    this.accessRecord();
     $("body").css("background","#F7F7F7");
     $("body").css("margin","0");
   },
