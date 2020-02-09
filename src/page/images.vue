@@ -42,7 +42,7 @@
         :page-sizes="[12,24,36,48]"
         :page-size="pagination.pageSize"
         :pager-count="11"
-        layout="total,sizes,prev, pager, next, jumper"
+        layout="prev, pager, next, jumper"
         :total="pagination.total"
       ></el-pagination>
     </div>

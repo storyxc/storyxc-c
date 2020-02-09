@@ -51,7 +51,7 @@
               <el-link href="/images" target="_blank">壁纸</el-link>
             </el-menu-item>
             <el-menu-item>
-              <el-link href="/contact" target="_self">联系</el-link>
+              <el-link href="/liveStream" target="_self">解析</el-link>
             </el-menu-item>
             <el-menu-item>
               <el-link href="/comment" target="_self">留言</el-link>
@@ -128,6 +128,9 @@
                     <h2>故事</h2>
                   </div>
                   <div id="aboutMeDesc">虽千万人吾往矣</div>
+                  <hr />
+                  <div id="visitorCount">你是本站第{{visitorCount}}个访客</div>
+                  <div id="visitCount">本站总浏览量:{{visitCount}}次</div>
                 </div>
                 <hr />
                 <p>当前时间</p>

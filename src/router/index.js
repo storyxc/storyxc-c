@@ -14,6 +14,7 @@ import RoleManagement from '@/page/roleManagement.vue'
 import MenuManagement from '@/page/menuManagement.vue'
 import ArticleManagement from '@/page/articleManagement.vue'
 import Images from '@/page/images.vue'
+import LiveStream from '@/page/liveStream.vue'
 
 Vue.use(Router)
 
@@ -36,6 +37,13 @@ export default new Router({
       component: Login,
       meta: {
         title: '登录 - 故事而已'
+      }
+    },
+    {
+      path: '/liveStream',
+      component: LiveStream,
+      meta: {
+        title: '直播源解析 - 故事而已'
       }
     },
     {
