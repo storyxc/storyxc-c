@@ -128,9 +128,6 @@
                     <h2>故事</h2>
                   </div>
                   <div id="aboutMeDesc">虽千万人吾往矣</div>
-                  <hr />
-                  <div id="visitorCount">你是本站第{{visitorCount}}个访客</div>
-                  <div id="visitCount">本站总浏览量:{{visitCount}}次</div>
                 </div>
                 <hr />
                 <p>当前时间</p>
@@ -216,9 +213,7 @@ export default {
       cateArtList: [],
       blogStat: {},
       hotArticle: [],
-      loading: true,
-      visitCount: '',
-      visitorCount: ''
+      loading: true
     };
   },
   methods: {
@@ -252,12 +247,6 @@ export default {
       this.$axios.get("/story/article/hot").then(res => {
         this.hotArticle = res.data.data;
       });
-    },
-    accessRecord(){
-      this.$axios.get("/story/access/visit").then(res=>{
-        this.visitCount = res.data.data.visitCount;
-        this.visitorCount = res.data.data.visitorCount;
-      })
     }
   },
   created() {
@@ -265,7 +254,6 @@ export default {
     this.queryCategoryArticle();
     this.queryBlogStat();
     this.queryHotArticle();
-    this.accessRecord();
     $("body").css("background","#F7F7F7");
     $("body").css("margin","0");
   },
