@@ -114,7 +114,9 @@ export default {
           date: item.date
         }
       }).then(res=>{
-        item.likeCount = res.data.data;
+        if(res.data.flag){
+          item.likeCount = res.data.data;
+        }
       })
     }
   }
