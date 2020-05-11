@@ -15,6 +15,8 @@ import MenuManagement from '@/page/menuManagement.vue'
 import ArticleManagement from '@/page/articleManagement.vue'
 import Images from '@/page/images.vue'
 import LiveStream from '@/page/liveStream.vue'
+import CategoryManagement from '@/page/CategoryManagement.vue'
+
 
 Vue.use(Router)
 
@@ -111,6 +113,11 @@ export default new Router({
     {
       path: '/articleManagement',
       component: ArticleManagement
+    },
+    {
+
+      path: '/CategoryManagement',
+      component: CategoryManagement
     }
   ]
 })
