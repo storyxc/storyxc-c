@@ -26,6 +26,7 @@
             :label="item.categoryId"
           >{{item.categoryName}}</el-radio-button>
         </el-radio-group>
+        <el-button type="primary" round icon="el-icon-plus" @click="handleCreateCategory()"></el-button>
       </div>
       <div id="tags" style="margin-top: 15px">
         <el-tag>请选择标签</el-tag>
@@ -52,7 +53,41 @@
         <el-button id="save" @click="save()" type="primary" plain>保存草稿</el-button>
       </div>
     </div>
+    <div class="add-form">
+          <el-dialog
+            title="新增文章分类"
+            :visible.sync="dialogFormVisible"
+            :close-on-click-modal="dialogAutoExit"
+          >
+            <template>
+              <el-tabs v-model="activeName" type="card">
+                <el-tab-pane label="分类信息" name="first">
+                  <el-form
+                    ref="dataAddForm"
+                    :model="formData"
+                    :rules="rules"
+                    label-position="right"
+                    label-width="100px"
+                  >
+                    <el-row>
+                      <el-col :span="12">
+                        <el-form-item label="分类名称" prop="categroyName">
+                          <el-input v-model="formData.categoryName" />
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-form>
+                </el-tab-pane>
+              </el-tabs>
+            </template>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取消</el-button>
+              <el-button type="primary" @click="handleAddCategory()">确定</el-button>
+            </div>
+          </el-dialog>
+        </div>
   </div>
+  
 </template>
     <script>
 // Local Registration
@@ -74,7 +109,12 @@ export default {
       },
       categories: [],
       tags: [],
-      id: ''
+      id: '',
+      formData: {},
+      dialogFormVisible: false,
+      rules: {
+        
+      }
     };
   },
   methods: {
@@ -150,6 +190,42 @@ export default {
           message: res.data.message
         })
       });
+    },
+    handleCreateCategory() {
+      //弹出添加窗口将表单数据清空
+      this.resetForm();
+      this.dialogFormVisible = true;
+      try {
+        //将表单验证结果清空
+        this.$refs["dataAddForm"].clearValidate();
+      } catch (e) {}
+    },
+    handleAddCategory() {
+      this.$refs["dataAddForm"].validate(valid => {
+        // 所有验证通过后才会为true,只要有一个失败就是false
+        if (valid) {
+          this.$axios
+            .post("/story/category", this.formData)
+            .then(res => {
+              this.$message({
+                message: res.data.message,
+                type: res.data.flag ? "success" : "error"
+              });
+              this.queryAllCategories();
+            });
+          this.dialogFormVisible = false;
+        } else {
+          // console.log('error submit!!');
+          // 中止form表单的提交
+          return false;
+        }
+      });
+    },
+    resetForm() {
+      this.formData = {}; // 清空表单数据
+      this.roleIds = [];
+      this.tableData = []; //添加表单窗口中检查组列表数据
+      this.activeName = "first";
     }
   },
   created() {

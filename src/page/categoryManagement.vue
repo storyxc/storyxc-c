@@ -234,7 +234,7 @@ export default {
     },
     //分页查询
     findPage() {
-      this.$axios.get("/story/category/findPage", this.pagination).then(res => {
+      this.$axios.post("/story/category/findPage", this.pagination).then(res => {
         this.dataList = res.data.data.list;
         this.pagination.total = res.data.data.total;
       });
