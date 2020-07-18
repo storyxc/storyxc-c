@@ -137,10 +137,8 @@ export default {
       if ("logout" === command) {
         this.$axios
           .get("/logout")
-          .then(res => {
-            window.location.replace(res.headers.Location);
-          })
-          .catch(window.location.reload());
+          .then()
+          .catch(window.location = '/');
       }
     },
     handleEdit() {
